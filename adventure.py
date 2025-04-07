@@ -71,48 +71,56 @@ def extract_secret_codes(journal_text):
 # --- Optional: Main execution block for your own testing ---
 if __name__ == '__main__':
     # Define file paths (adjust if your files are located elsewhere)
-    excel_file = 'artifacts.xlsx'
-    tsv_file = 'locations.tsv'
-    journal_file = 'journal.txt'
+    EXCEL_FILE = 'artifacts.xlsx' # Renamed
+    TSV_FILE = 'locations.tsv'   # Renamed
+    JOURNAL_FILE = 'journal.txt' # Renamed
 
-    print(f"--- Loading Artifact Data from {excel_file} ---")
+    print(f"--- Loading Artifact Data from {EXCEL_FILE} ---") # Updated
     try:
-        artifacts_df = load_artifact_data(excel_file)
-        print("Successfully loaded DataFrame. First 5 rows:")
-        print(artifacts_df.head())
-        print("\nDataFrame Info:")
-        artifacts_df.info()
+        artifacts_df = load_artifact_data(EXCEL_FILE) # Updated
+        if artifacts_df is not None:
+            print("Successfully loaded DataFrame. First 5 rows:")
+            print(artifacts_df.head())
+            print("\nDataFrame Info:")
+            artifacts_df.info()
+        else:
+            print("Error: load_artifact_data returned None.")
     except FileNotFoundError:
-        print(f"Error: File not found at {excel_file}")
+        print(f"Error: File not found at {EXCEL_FILE}") # Updated
     except Exception as e:
         print(f"An error occurred loading artifact data: {e}")
 
-    print(f"\n--- Loading Location Notes from {tsv_file} ---")
+    print(f"\n--- Loading Location Notes from {TSV_FILE} ---") # Updated
     try:
-        locations_df = load_location_notes(tsv_file)
-        print("Successfully loaded DataFrame. First 5 rows:")
-        print(locations_df.head())
-        print("\nDataFrame Info:")
-        locations_df.info()
+        locations_df = load_location_notes(TSV_FILE) # Updated
+        if locations_df is not None:
+            print("Successfully loaded DataFrame. First 5 rows:")
+            print(locations_df.head())
+            print("\nDataFrame Info:")
+            locations_df.info()
+        else:
+            print("Error: load_location_notes returned None.")
     except FileNotFoundError:
-        print(f"Error: File not found at {tsv_file}")
+        print(f"Error: File not found at {TSV_FILE}") # Updated
     except Exception as e:
         print(f"An error occurred loading location data: {e}")
 
-    print(f"\n--- Processing Journal from {journal_file} ---")
+    print(f"\n--- Processing Journal from {JOURNAL_FILE} ---") # Updated
     try:
-        with open(journal_file, 'r', encoding='utf-8') as f:
+        with open(JOURNAL_FILE, 'r', encoding='utf-8') as f: # Updated
             journal_content = f.read()
 
         print("\nExtracting Dates...")
-        dates = extract_journal_dates(journal_content)
-        print(f"Found dates: {dates}")
+        journal_dates = extract_journal_dates(journal_content) # Renamed variable
+        print(f"Found dates: {journal_dates}") # Updated
 
         print("\nExtracting Secret Codes...")
-        codes = extract_secret_codes(journal_content)
-        print(f"Found codes: {codes}")
+        secret_codes = extract_secret_codes(journal_content) # Renamed variable
+        print(f"Found codes: {secret_codes}") # Updated
 
     except FileNotFoundError:
-        print(f"Error: File not found at {journal_file}")
+        print(f"Error: File not found at {JOURNAL_FILE}") # Updated
+    except Exception as e:
+        print(f"An error occurred processing the journal: {e}")
     except Exception as e:
         print(f"An error occurred processing the journal: {e}")
