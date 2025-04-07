@@ -1,6 +1,6 @@
-import pandas as pd
-import re
-import datetime
+import re                     # Standard library
+from datetime import datetime # Standard library
+import pandas as pd           # Third-party library
 
 def load_artifact_data(excel_filepath):
     """
@@ -100,12 +100,6 @@ if __name__ == '__main__':
         print(f"Error: File not found at {EXCEL_FILE}")
     except IOError as e: # <-- More specific
         print(f"An I/O error occurred loading artifact data: {e}")
-    # You could add other specific pandas errors if needed, e.g.
-    # except pd.errors.ParserError as e:
-    #     print(f"Error parsing artifact data: {e}")
-    except Exception as e: # <-- Keep as a last resort ONLY if necessary
-        print(f"An unexpected error occurred loading artifact data: {e}")
-
 
     print(f"\n--- Loading Location Notes from {TSV_FILE} ---")
     try:
