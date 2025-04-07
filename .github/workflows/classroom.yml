@@ -14,12 +14,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
+    # --- Added Setup Step ---
+    - name: Set up Python
+      uses: actions/setup-python@v5 # Use a specific version like v5
+      with:
+        python-version: '3.x' # Or specify a version like '3.10', '3.11' etc.
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pytest pylint pandas openpyxl # Added pandas and openpyxl (needed by pandas for .xlsx)
+    # --- End of Added Setup Step ---
+
     - name: Run test_adventure_1
       id: test_adventure_1
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_1
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_1.py
         timeout: 10
         max-score: 10
@@ -29,7 +41,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_pylint_warnings # Differentiated name
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_2.py
         timeout: 10
         max-score: 10
@@ -39,7 +51,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_3
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_3.py
         timeout: 10
         max-score: 10
@@ -49,7 +61,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_4
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest -s test/test_adventure_4.py # Added -s for output capture
         timeout: 10
         max-score: 10
@@ -59,7 +71,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_5
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest -s test/test_adventure_5.py # Added -s for output capture
         timeout: 10
         max-score: 10
@@ -69,7 +81,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_6
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest -s test/test_adventure_6.py # Added -s for output capture
         timeout: 10
         max-score: 10
@@ -79,7 +91,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_7
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_7.py
         timeout: 10
         max-score: 10
@@ -89,7 +101,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_8
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_8.py
         timeout: 10
         max-score: 10
@@ -99,7 +111,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_9
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_9.py
         timeout: 10
         max-score: 10
@@ -109,7 +121,7 @@ jobs:
       uses: classroom-resources/autograding-command-grader@v1
       with:
         test-name: test_adventure_10
-        setup-command: pip install pytest pylint
+        # setup-command: pip install pytest pylint # <-- REMOVED
         command: pytest test/test_adventure_10.py
         timeout: 10
         max-score: 10
