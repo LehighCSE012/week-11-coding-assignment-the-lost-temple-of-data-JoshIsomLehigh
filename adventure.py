@@ -33,21 +33,31 @@ def load_location_notes(tsv_filepath):
     return df
 def extract_journal_dates(journal_text):
     """
-    Extracts all dates in MM/DD/YYYY format from the journal text.
+    Extracts all valid dates in MM/DD/YYYY format from the journal text.
 
     Args:
         journal_text (str): The full text content of the journal.
 
     Returns:
-        list[str]: A list of date strings found in the text.
+        list[str]: A list of valid date strings found in the text.
     """
-    # Hint: Use re.findall with a raw string pattern for MM/DD/YYYY format.
-    # Pattern idea: r"\d{2}/\d{2}/\d{4}"
-    # Replace 'pass' with your code
+    # Hint: Use re.findall first, then validate each found string.
     regex_pattern = r"\d{2}/\d{2}/\d{4}"
-    dates = re.findall(regex_pattern, journal_text)
-    return dates
-    # return the list of found dates
+    potential_dates = re.findall(regex_pattern, journal_text)
+
+    valid_dates = []
+    for date_str in potential_dates:
+        try:
+            # Try to parse the date string using the expected format.
+            # If the date is invalid (e.g., 99/99/9999), this will raise a ValueError.
+            datetime.strptime(date_str, '%m/%d/%Y')
+            # If strptime succeeds without error, the date is valid.
+            valid_dates.append(date_str)
+        except ValueError:
+            # If a ValueError occurs, the date string is not a valid date, so we ignore it.
+            pass
+
+    return valid_dates
 
 def extract_secret_codes(journal_text):
     """
@@ -110,9 +120,6 @@ if __name__ == '__main__':
         print(f"Error: File not found at {TSV_FILE}")
     except IOError as e: # <-- More specific
         print(f"An I/O error occurred loading location data: {e}")
-    except Exception as e: # <-- Keep as a last resort ONLY if necessary
-        print(f"An unexpected error occurred loading location data: {e}")
-
 
     print(f"\n--- Processing Journal from {JOURNAL_FILE} ---")
     try:
@@ -132,5 +139,3 @@ if __name__ == '__main__':
         print(f"Error: File not found at {JOURNAL_FILE}")
     except IOError as e: # <-- More specific (covers read errors, permissions etc.)
         print(f"An I/O error occurred processing the journal: {e}")
-    except Exception as e: # <-- Keep as a last resort ONLY if necessary
-        print(f"An unexpected error occurred processing the journal: {e}")
