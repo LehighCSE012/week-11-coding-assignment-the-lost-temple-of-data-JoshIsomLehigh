@@ -70,14 +70,14 @@ def extract_secret_codes(journal_text):
 
 # --- Optional: Main execution block for your own testing ---
 if __name__ == '__main__':
-    # Define file paths (adjust if your files are located elsewhere)
-    EXCEL_FILE = 'artifacts.xlsx' # Renamed
-    TSV_FILE = 'locations.tsv'   # Renamed
-    JOURNAL_FILE = 'journal.txt' # Renamed
+    # Define file paths
+    EXCEL_FILE = 'artifacts.xlsx'
+    TSV_FILE = 'locations.tsv'
+    JOURNAL_FILE = 'journal.txt'
 
-    print(f"--- Loading Artifact Data from {EXCEL_FILE} ---") # Updated
+    print(f"--- Loading Artifact Data from {EXCEL_FILE} ---")
     try:
-        artifacts_df = load_artifact_data(EXCEL_FILE) # Updated
+        artifacts_df = load_artifact_data(EXCEL_FILE)
         if artifacts_df is not None:
             print("Successfully loaded DataFrame. First 5 rows:")
             print(artifacts_df.head())
@@ -86,13 +86,19 @@ if __name__ == '__main__':
         else:
             print("Error: load_artifact_data returned None.")
     except FileNotFoundError:
-        print(f"Error: File not found at {EXCEL_FILE}") # Updated
-    except Exception as e:
-        print(f"An error occurred loading artifact data: {e}")
+        print(f"Error: File not found at {EXCEL_FILE}")
+    except IOError as e: # <-- More specific
+        print(f"An I/O error occurred loading artifact data: {e}")
+    # You could add other specific pandas errors if needed, e.g.
+    # except pd.errors.ParserError as e:
+    #     print(f"Error parsing artifact data: {e}")
+    except Exception as e: # <-- Keep as a last resort ONLY if necessary
+        print(f"An unexpected error occurred loading artifact data: {e}")
 
-    print(f"\n--- Loading Location Notes from {TSV_FILE} ---") # Updated
+
+    print(f"\n--- Loading Location Notes from {TSV_FILE} ---")
     try:
-        locations_df = load_location_notes(TSV_FILE) # Updated
+        locations_df = load_location_notes(TSV_FILE)
         if locations_df is not None:
             print("Successfully loaded DataFrame. First 5 rows:")
             print(locations_df.head())
@@ -101,26 +107,30 @@ if __name__ == '__main__':
         else:
             print("Error: load_location_notes returned None.")
     except FileNotFoundError:
-        print(f"Error: File not found at {TSV_FILE}") # Updated
-    except Exception as e:
-        print(f"An error occurred loading location data: {e}")
+        print(f"Error: File not found at {TSV_FILE}")
+    except IOError as e: # <-- More specific
+        print(f"An I/O error occurred loading location data: {e}")
+    except Exception as e: # <-- Keep as a last resort ONLY if necessary
+        print(f"An unexpected error occurred loading location data: {e}")
 
-    print(f"\n--- Processing Journal from {JOURNAL_FILE} ---") # Updated
+
+    print(f"\n--- Processing Journal from {JOURNAL_FILE} ---")
     try:
-        with open(JOURNAL_FILE, 'r', encoding='utf-8') as f: # Updated
+        # It's better to put the 'with open' inside the try block too
+        with open(JOURNAL_FILE, 'r', encoding='utf-8') as f:
             journal_content = f.read()
 
         print("\nExtracting Dates...")
-        journal_dates = extract_journal_dates(journal_content) # Renamed variable
-        print(f"Found dates: {journal_dates}") # Updated
+        journal_dates = extract_journal_dates(journal_content)
+        print(f"Found dates: {journal_dates}")
 
         print("\nExtracting Secret Codes...")
-        secret_codes = extract_secret_codes(journal_content) # Renamed variable
-        print(f"Found codes: {secret_codes}") # Updated
+        secret_codes = extract_secret_codes(journal_content)
+        print(f"Found codes: {secret_codes}")
 
     except FileNotFoundError:
-        print(f"Error: File not found at {JOURNAL_FILE}") # Updated
-    except Exception as e:
-        print(f"An error occurred processing the journal: {e}")
-    except Exception as e:
-        print(f"An error occurred processing the journal: {e}")
+        print(f"Error: File not found at {JOURNAL_FILE}")
+    except IOError as e: # <-- More specific (covers read errors, permissions etc.)
+        print(f"An I/O error occurred processing the journal: {e}")
+    except Exception as e: # <-- Keep as a last resort ONLY if necessary
+        print(f"An unexpected error occurred processing the journal: {e}")
