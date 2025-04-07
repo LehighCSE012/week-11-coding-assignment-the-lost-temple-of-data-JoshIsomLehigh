@@ -1,3 +1,6 @@
+"""
+Temple of data assignment 
+"""
 import re                     # Standard library
 from datetime import datetime # Standard library
 import pandas as pd           # Third-party library
